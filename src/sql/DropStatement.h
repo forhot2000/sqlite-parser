@@ -1,25 +1,31 @@
-#ifndef SQLPARSER_DROP_STATEMENT_H
-#define SQLPARSER_DROP_STATEMENT_H
+#ifndef __SQLPARSER__DROP_STATEMENT_H__
+#define __SQLPARSER__DROP_STATEMENT_H__
 
 #include "SQLStatement.h"
 
 // Note: Implementations of constructors and destructors can be found in statements.cpp.
 namespace hsql {
 
-enum DropType { kDropTable, kDropSchema, kDropIndex, kDropView, kDropPreparedStatement };
+  enum DropType {
+    kDropTable,
+    kDropSchema,
+    kDropIndex,
+    kDropView,
+    kDropPreparedStatement
+  };
 
-// Represents SQL Delete statements.
-// Example "DROP TABLE students;"
-struct DropStatement : SQLStatement {
-  DropStatement(DropType type);
-  ~DropStatement() override;
+  // Represents SQL Delete statements.
+  // Example "DROP TABLE students;"
+  struct DropStatement : SQLStatement {
 
-  DropType type;
-  bool ifExists;
-  char* schema;
-  char* name;
-  char* indexName;
-};
+    DropStatement(DropType type);
+    virtual ~DropStatement();
 
-}  // namespace hsql
+    DropType type;
+    bool ifExists;
+    char* schema;
+    char* name;
+  };
+
+} // namespace hsql
 #endif

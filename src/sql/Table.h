@@ -1,5 +1,5 @@
-#ifndef SQLPARSER_TABLEREF_H
-#define SQLPARSER_TABLEREF_H
+#ifndef __SQLPARSER__TABLEREF_H__
+#define __SQLPARSER__TABLEREF_H__
 
 #include <stdio.h>
 #include <vector>
@@ -7,62 +7,66 @@
 
 namespace hsql {
 
-struct SelectStatement;
-struct JoinDefinition;
-struct TableRef;
+  struct SelectStatement;
+  struct JoinDefinition;
+  struct TableRef;
 
-// Possible table reference types.
-enum TableRefType { kTableName, kTableSelect, kTableJoin, kTableCrossProduct };
+  // Possible table reference types.
+  enum TableRefType {
+    kTableName,
+    kTableSelect,
+    kTableJoin,
+    kTableCrossProduct
+  };
 
-struct TableName {
-  char* schema;
-  char* name;
-};
+  struct TableName {
+    char* schema;
+    char* name;
+  };
 
-struct Alias {
-  Alias(char* name, std::vector<char*>* columns = nullptr);
-  ~Alias();
+  // Holds reference to tables. Can be either table names or a select statement.
+  struct TableRef {
+    TableRef(TableRefType type);
+    virtual ~TableRef();
 
-  char* name;
-  std::vector<char*>* columns;
-};
+    TableRefType type;
 
-// Holds reference to tables. Can be either table names or a select statement.
-struct TableRef {
-  TableRef(TableRefType type);
-  virtual ~TableRef();
+    char* schema;
+    char* name;
+    char* alias;
 
-  TableRefType type;
+    SelectStatement* select;
+    std::vector<TableRef*>* list;
+    JoinDefinition* join;
 
-  char* schema;
-  char* name;
-  Alias* alias;
+    // Returns true if a schema is set.
+    bool hasSchema() const;
 
-  SelectStatement* select;
-  std::vector<TableRef*>* list;
-  JoinDefinition* join;
+    // Returns the alias, if it is set. Otherwise the name.
+    const char* getName() const;
+  };
 
-  // Returns true if a schema is set.
-  bool hasSchema() const;
+  // Possible types of joins.
+  enum JoinType {
+    kJoinInner,
+    kJoinFull,
+    kJoinLeft,
+    kJoinRight,
+    kJoinCross,
+    kJoinNatural
+  };
 
-  // Returns the alias, if it is set. Otherwise the name.
-  const char* getName() const;
-};
+  // Definition of a join construct.
+  struct JoinDefinition {
+    JoinDefinition();
+    virtual ~JoinDefinition();
 
-// Possible types of joins.
-enum JoinType { kJoinInner, kJoinFull, kJoinLeft, kJoinRight, kJoinCross, kJoinNatural };
+    TableRef* left;
+    TableRef* right;
+    Expr* condition;
 
-// Definition of a join construct.
-struct JoinDefinition {
-  JoinDefinition();
-  virtual ~JoinDefinition();
+    JoinType type;
+  };
 
-  TableRef* left;
-  TableRef* right;
-  Expr* condition;
-
-  JoinType type;
-};
-
-}  // namespace hsql
+} // namespace hsql
 #endif
