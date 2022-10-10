@@ -62,7 +62,6 @@ static thread_local std::stringstream strbuf;
 
 [ \t\n]+	/* skip whitespace */;
 
-CURRENT_TIMESTAMP TOKEN(CURRENT_TIMESTAMP)
 AUTOINCREMENT     TOKEN(AUTOINCREMENT)
 CURRENT_DATE      TOKEN(CURRENT_DATE)
 CURRENT_TIME      TOKEN(CURRENT_TIME)

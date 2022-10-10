@@ -155,7 +155,7 @@ int yyerror(YYLTYPE* llocp, SQLParserResult* result, yyscan_t scanner, const cha
 %token <ival> INTVAL
 
 /* SQL Keywords */
-%token CURRENT_TIMESTAMP AUTOINCREMENT CURRENT_DATE
+%token AUTOINCREMENT CURRENT_DATE
 %token CURRENT_TIME TRANSACTION CONSTRAINT DEFERRABLE
 %token REFERENCES EXCLUSIVE IMMEDIATE INITIALLY INTERSECT
 %token RECURSIVE SAVEPOINT TEMPORARY CONFLICT DATABASE
@@ -723,7 +723,6 @@ comp_expr:
 cast_expr:
 		CAST '(' expr AS column_type ')' { $$ = Expr::makeCast($3, $5); }
 	;
-
 
 function_expr:
 		IDENTIFIER '(' ')' { $$ = Expr::makeFunctionRef($1, new std::vector<Expr*>(), false); }
