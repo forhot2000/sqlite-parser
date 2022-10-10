@@ -1,8 +1,4 @@
 # Load Tables
-CREATE TABLE IF NOT EXISTS students FROM TBL FILE 'test/students.tbl';
-CREATE TABLE IF NOT EXISTS test_big FROM TBL FILE 'test/lin_xxs.tbl';
-CREATE TABLE IF NOT EXISTS companies FROM TBL FILE 'test/tables/companies.tbl';
-CREATE TABLE IF NOT EXISTS employees FROM TBL FILE 'test/tables/employees.tbl';
 CREATE TABLE IF NOT EXISTS test (v1 INTEGER, v2 INTEGER, v3 INTEGER);
 # SELECT
 SELECT * FROM students WHERE grade <= 2.0;
