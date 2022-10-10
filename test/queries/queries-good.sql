@@ -27,7 +27,6 @@ CREATE TABLE students (name TEXT, student_number INTEGER, city TEXT, grade DOUBL
 # INSERT
 INSERT INTO test_table VALUES (1, 2, 'test');
 INSERT INTO test_table VALUES (NULL);
-INSERT INTO test_table VALUES (CURRENT_TIMESTAMP);
 INSERT INTO test_table VALUES (X'01020304');
 INSERT INTO test_table (id, value, name) VALUES (1, 2, 'test');
 INSERT INTO test_table SELECT * FROM students;
