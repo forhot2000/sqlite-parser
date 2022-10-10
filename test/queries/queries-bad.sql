@@ -7,4 +7,5 @@
 !SELECT abc;
 !INSERT INTO test_table VALUESd (1, 2, 'test');
 !SELECT * FROM t WHERE a = ? AND b = ?;SELECT 1;
+!TRUNCATE TABLE test_table;
 !SHOW COLUMNS;

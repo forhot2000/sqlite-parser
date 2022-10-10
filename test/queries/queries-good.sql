@@ -35,7 +35,6 @@ INSERT INTO some_schema.test_table SELECT * FROM another_schema.students;
 # DELETE
 DELETE FROM students WHERE grade > 3.0
 DELETE FROM students
-TRUNCATE TABLE students
 # UPDATE
 UPDATE students SET grade = 1.3 WHERE name = 'Max Mustermann';
 UPDATE students SET grade = 1.3, name='Felix Fürstenberg' WHERE name = 'Max Mustermann';

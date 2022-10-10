@@ -45,10 +45,10 @@ TEST(CreateStatementTest) {
   ASSERT_STREQ(stmt->columns->at(1)->name, "student_number");
   ASSERT_STREQ(stmt->columns->at(2)->name, "city");
   ASSERT_STREQ(stmt->columns->at(3)->name, "grade");
-  ASSERT_EQ(stmt->columns->at(0)->type, ColumnDefinition::TEXT);
-  ASSERT_EQ(stmt->columns->at(1)->type, ColumnDefinition::INTEGER);
-  ASSERT_EQ(stmt->columns->at(2)->type, ColumnDefinition::INTEGER);
-  ASSERT_EQ(stmt->columns->at(3)->type, ColumnDefinition::REAL);
+  ASSERT_EQ(stmt->columns->at(0)->type.data_type, DataType::TEXT);
+  ASSERT_EQ(stmt->columns->at(1)->type.data_type, DataType::INTEGER);
+  ASSERT_EQ(stmt->columns->at(2)->type.data_type, DataType::INTEGER);
+  ASSERT_EQ(stmt->columns->at(3)->type.data_type, DataType::REAL);
 }
 
 
