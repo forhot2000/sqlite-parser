@@ -7,7 +7,9 @@
 namespace hsql {
   enum InsertType {
     kInsertValues,
-    kInsertSelect
+    kInsertSelect,
+    kReplaceValues,
+    kReplaceSelect
   };
 
   // Represents SQL Insert statements.

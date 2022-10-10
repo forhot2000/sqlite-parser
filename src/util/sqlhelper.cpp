@@ -242,12 +242,14 @@ namespace hsql {
     }
     switch (stmt->type) {
     case kInsertValues:
+    case kReplaceValues:
       inprint("Values", numIndent + 1);
       for (Expr* expr : *stmt->values) {
         printExpression(expr, numIndent + 2);
       }
       break;
     case kInsertSelect:
+    case kReplaceSelect:
       printSelectStatementInfo(stmt->select, numIndent + 1);
       break;
     }

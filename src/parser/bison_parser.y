@@ -429,6 +429,34 @@ insert_statement:
 			$$->columns = $4;
 			$$->select = $5;
 		}
+	|	REPLACE INTO table_name opt_column_list VALUES '(' literal_list ')' {
+			$$ = new InsertStatement(kReplaceValues);
+			$$->schema = $3.schema;
+			$$->tableName = $3.name;
+			$$->columns = $4;
+			$$->values = $7;
+		}
+	|	REPLACE INTO table_name opt_column_list select_no_paren {
+			$$ = new InsertStatement(kReplaceSelect);
+			$$->schema = $3.schema;
+			$$->tableName = $3.name;
+			$$->columns = $4;
+			$$->select = $5;
+		}
+	|	INSERT OR REPLACE INTO table_name opt_column_list VALUES '(' literal_list ')' {
+			$$ = new InsertStatement(kReplaceValues);
+			$$->schema = $5.schema;
+			$$->tableName = $5.name;
+			$$->columns = $6;
+			$$->values = $9;
+		}
+	|	INSERT OR REPLACE INTO table_name opt_column_list select_no_paren {
+			$$ = new InsertStatement(kReplaceSelect);
+			$$->schema = $5.schema;
+			$$->tableName = $5.name;
+			$$->columns = $6;
+			$$->select = $7;
+		}
 	;
 
 
