@@ -3,7 +3,7 @@
 namespace hsql {
 
   // ColumnDefinition
-  ColumnDefinition::ColumnDefinition(char* name, DataType type, std::vector<hsql::ColumnConstraint*>* constraints) :
+  ColumnDefinition::ColumnDefinition(char* name, ColumnType type, std::vector<hsql::ColumnConstraint*>* constraints) :
     name(name),
     type(type),
     isPrimaryKey(false),
@@ -34,6 +34,37 @@ namespace hsql {
   ColumnDefinition::~ColumnDefinition() {
     free(name);
     delete defaultVal;
+  }
+
+  ColumnType::ColumnType(DataType data_type, int64_t length, int64_t precision, int64_t scale)
+      : data_type(data_type), length(length), precision(precision), scale(scale){};
+
+  bool operator==(const ColumnType& lhs, const ColumnType& rhs) {
+    if (lhs.data_type != rhs.data_type) return false;
+    return lhs.length == rhs.length && lhs.precision == rhs.precision && lhs.scale == rhs.scale;
+  }
+
+  bool operator!=(const ColumnType& lhs, const ColumnType& rhs) { return !(lhs == rhs); }
+
+  std::ostream& operator<<(std::ostream& stream, const ColumnType& column_type) {
+    switch (column_type.data_type) {
+      case DataType::UNKNOWN:
+        stream << "UNKNOWN";
+        break;
+      case DataType::INTEGER:
+        stream << "INT";
+        break;
+      case DataType::REAL:
+        stream << "REAL";
+        break;
+      case DataType::TEXT:
+        stream << "TEXT";
+        break;
+      case DataType::BLOB:
+        stream << "BOOLEAN";
+        break;
+    }
+    return stream;
   }
 
   // ColumnConstraint

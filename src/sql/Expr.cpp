@@ -17,6 +17,9 @@ namespace hsql {
       fval(0),
       ival(0),
       ival2(0),
+      datetimeField(kDatetimeNone),
+      columnType(DataType::UNKNOWN, 0),
+      isBoolLiteral(false),
       opType(kOpNone),
       distinct(false) {};
 
@@ -202,6 +205,13 @@ namespace hsql {
     e->expr = expr;
     e->select = select;
 
+    return e;
+  }
+
+  Expr* Expr::makeCast(Expr* expr, ColumnType columnType) {
+    Expr* e = new Expr(kExprCast);
+    e->columnType = columnType;
+    e->expr = expr;
     return e;
   }
 

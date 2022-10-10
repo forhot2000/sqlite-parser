@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <memory>
 #include <vector>
+#include "ColumnType.h"
 
 namespace hsql {
   struct SelectStatement;
@@ -27,7 +28,8 @@ namespace hsql {
     kExprArray,
     kExprArrayIndex,
     kExprCaseList,
-    kExprCaseListElement
+    kExprCaseListElement,
+    kExprCast
   };
 
 // Operator types. These are important for expressions of type kExprOperator.
@@ -71,6 +73,16 @@ namespace hsql {
     kOpExists
   };
 
+  enum DatetimeField {
+    kDatetimeNone,
+    kDatetimeSecond,
+    kDatetimeMinute,
+    kDatetimeHour,
+    kDatetimeDay,
+    kDatetimeMonth,
+    kDatetimeYear,
+  };
+
   typedef struct Expr Expr;
 
 // Represents SQL expressions (i.e. literals, operators, column_refs).
@@ -93,6 +105,9 @@ namespace hsql {
     float fval;
     int64_t ival;
     int64_t ival2;
+    DatetimeField datetimeField;
+    ColumnType columnType;
+    bool isBoolLiteral;
 
     OperatorType opType;
     bool distinct;
@@ -159,6 +174,8 @@ namespace hsql {
     static Expr* makeInOperator(Expr* expr, std::vector<Expr*>* exprList);
 
     static Expr* makeInOperator(Expr* expr, SelectStatement* select);
+  
+    static Expr* makeCast(Expr* expr, ColumnType columnType);
   };
 
 // Zero initializes an Expr object and assigns it to a space in the heap

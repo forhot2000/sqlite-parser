@@ -226,10 +226,16 @@ TO                TOKEN(TO)
 	return SQL_IDENTIFIER;
 }
 
-'[^'\n]*' {
+'[^']*' {
 	// Crop the leading and trailing quote char
 	yylval->sval = hsql::substr(yytext, 1, strlen(yytext)-1);
 	return SQL_STRING;
+}
+
+X'[A-Za-z0-9]*' {
+	// Crop the leading and trailing quote char
+	yylval->sval = hsql::substr(yytext, 2, strlen(yytext)-1);
+	return SQL_BINARY;
 }
 
 . { fprintf(stderr, "[SQL-Lexer-Error] Unknown Character: %c\n", yytext[0]); return 0; }

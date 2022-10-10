@@ -199,17 +199,17 @@ namespace hsql {
       inprint("Columns", numIndent + 1);
       for (ColumnDefinition* col : *stmt->columns) {
         inprint(col->name, numIndent + 2);
-        switch (col->type) {
-            case ColumnDefinition::TEXT:
+        switch (col->type.data_type) {
+            case DataType::TEXT:
                 inprint("Type: TEXT", numIndent + 3);
                 break;
-            case ColumnDefinition::INTEGER:
+            case DataType::INTEGER:
                 inprint("Type: INTEGER", numIndent + 3);
                 break;
-            case ColumnDefinition::REAL:
+            case DataType::REAL:
                 inprint("Type: REAL", numIndent + 3);
                 break;
-            case ColumnDefinition::BLOB:
+            case DataType::BLOB:
                 inprint("Type: BLOB", numIndent + 3);
                 break;
             default:

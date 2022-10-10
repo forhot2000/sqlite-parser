@@ -26,19 +26,12 @@ namespace hsql {
 
   // Represents definition of a table column
   struct ColumnDefinition {
-    enum DataType {
-      UNKNOWN,
-      TEXT,
-      INTEGER,
-      REAL,
-      BLOB
-    };
 
-    ColumnDefinition(char* name, DataType type, std::vector<hsql::ColumnConstraint*>* constraints);
+    ColumnDefinition(char* name, ColumnType type, std::vector<hsql::ColumnConstraint*>* constraints);
     virtual ~ColumnDefinition();
 
     char* name;
-    DataType type;
+    ColumnType type;
 
     bool isPrimaryKey;
     bool isUnique;

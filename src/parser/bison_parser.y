@@ -114,6 +114,7 @@ int yyerror(YYLTYPE* llocp, SQLParserResult* result, yyscan_t scanner, const cha
 	hsql::LimitDescription* limit;
 	hsql::ColumnDefinition* column_t;
 	hsql::ColumnConstraint* cconstraint_t;
+  	hsql::ColumnType column_type_t;
 	hsql::GroupByDescription* group_t;
 	hsql::UpdateClause* update_t;
 
@@ -132,7 +133,7 @@ int yyerror(YYLTYPE* llocp, SQLParserResult* result, yyscan_t scanner, const cha
 /*********************************
  ** Destructor symbols
  *********************************/
-%destructor { } <fval> <ival> <uval> <bval> <order_type>
+%destructor { } <fval> <ival> <uval> <bval> <order_type> <column_type_t>
 %destructor { free( ($$.name) ); free( ($$.schema) ); } <table_name>
 %destructor { free( ($$) ); } <sval>
 %destructor {
@@ -149,7 +150,7 @@ int yyerror(YYLTYPE* llocp, SQLParserResult* result, yyscan_t scanner, const cha
 /*********************************
  ** Token Definition
  *********************************/
-%token <sval> IDENTIFIER STRING
+%token <sval> IDENTIFIER STRING BINARY
 %token <fval> FLOATVAL
 %token <ival> INTVAL
 
@@ -187,10 +188,10 @@ int yyerror(YYLTYPE* llocp, SQLParserResult* result, yyscan_t scanner, const cha
 %type <table_name>  table_name
 %type <sval> 		opt_alias alias
 %type <bval> 		opt_not_exists opt_exists opt_distinct opt_virtual opt_temporary
-%type <uval>		opt_join_type column_type
+%type <uval>		opt_join_type
 %type <table> 		from_clause table_ref table_ref_atomic table_ref_name nonjoin_table_ref_atomic
 %type <table>		join_clause table_ref_name_no_alias
-%type <expr> 		expr operand scalar_expr unary_expr binary_expr logic_expr exists_expr
+%type <expr> 		expr operand scalar_expr unary_expr binary_expr logic_expr exists_expr cast_expr
 %type <expr>		function_expr between_expr expr_alias param_expr
 %type <expr> 		column_name literal int_literal num_literal string_literal
 %type <expr> 		comp_expr opt_where join_condition opt_having case_expr case_list in_expr hint
@@ -200,6 +201,7 @@ int yyerror(YYLTYPE* llocp, SQLParserResult* result, yyscan_t scanner, const cha
 %type <order_type>	opt_order_type
 %type <column_t>	column_def
 %type <cconstraint_t>	column_constraint
+%type <column_type_t>	column_type
 %type <update_t>	update_clause
 %type <group_t>		opt_group
 
@@ -334,7 +336,7 @@ column_def_commalist:
 
 column_def:
 		IDENTIFIER column_type column_constraint_list_nullable {
-			$$ = new ColumnDefinition($1, (ColumnDefinition::DataType) $2, $3);
+			$$ = new ColumnDefinition($1, (ColumnType) $2, $3);
 		}
 	;
 
@@ -358,15 +360,15 @@ column_constraint:
 
 
 column_type:
-		INT { $$ = ColumnDefinition::INTEGER; }
-	|	INTEGER { $$ = ColumnDefinition::INTEGER; }
-	|	LONG { $$ = ColumnDefinition::INTEGER; }
-	|	BOOLEAN { $$ = ColumnDefinition::INTEGER; }
-	|	TEXT { $$ = ColumnDefinition::TEXT; }
-	|	BLOB { $$ = ColumnDefinition::TEXT; }
-	|	REAL { $$ = ColumnDefinition::REAL; }
-	|	DOUBLE { $$ = ColumnDefinition::REAL; }
-	|	FLOAT { $$ = ColumnDefinition::REAL; }
+		INT { $$ = ColumnType{DataType::INTEGER}; }
+	|	INTEGER { $$ = ColumnType{DataType::INTEGER}; }
+	|	LONG { $$ = ColumnType{DataType::INTEGER}; }
+	|	BOOLEAN { $$ = ColumnType{DataType::INTEGER}; }
+	|	TEXT { $$ = ColumnType{DataType::TEXT}; }
+	|	BLOB { $$ = ColumnType{DataType::TEXT}; }
+	|	REAL { $$ = ColumnType{DataType::REAL}; }
+	|	DOUBLE { $$ = ColumnType{DataType::REAL}; }
+	|	FLOAT { $$ = ColumnType{DataType::REAL}; }
 	;
 
 /******************************
@@ -647,6 +649,7 @@ operand:
 	|	binary_expr
 	|	case_expr
 	|	function_expr
+	|   cast_expr
 	|	'(' select_no_paren ')' { $$ = Expr::makeSelect($2); }
 	;
 
@@ -717,6 +720,11 @@ comp_expr:
 	|	operand GREATEREQ operand	{ $$ = Expr::makeOpBinary($1, kOpGreaterEq, $3); }
 	;
 
+cast_expr:
+		CAST '(' expr AS column_type ')' { $$ = Expr::makeCast($3, $5); }
+	;
+
+
 function_expr:
 		IDENTIFIER '(' ')' { $$ = Expr::makeFunctionRef($1, new std::vector<Expr*>(), false); }
 	|	IDENTIFIER '(' opt_distinct expr_list ')' { $$ = Expr::makeFunctionRef($1, $4, $3); }
@@ -742,6 +750,7 @@ literal:
 
 string_literal:
 		STRING { $$ = Expr::makeLiteral($1); }
+	|	BINARY { $$ = Expr::makeLiteral($1); }
 	;
 
 
