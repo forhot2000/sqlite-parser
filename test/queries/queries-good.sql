@@ -31,6 +31,9 @@ INSERT INTO test_table VALUES (X'01020304');
 INSERT INTO test_table (id, value, name) VALUES (1, 2, 'test');
 INSERT INTO test_table SELECT * FROM students;
 INSERT INTO some_schema.test_table SELECT * FROM another_schema.students;
+# REPLACE
+INSERT OR REPLACE INTO test_table VALUES (1, 2, 'test');
+REPLACE INTO test_table VALUES (1, 2, 'test');
 # DELETE
 DELETE FROM students WHERE grade > 3.0
 DELETE FROM students
