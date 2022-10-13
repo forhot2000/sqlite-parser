@@ -18,6 +18,23 @@ TEST(SelectTest) {
   ASSERT_NULL(stmt->groupBy);
 }
 
+TEST(SelectKeyTest) {
+  TEST_PARSE_SINGLE_SQL(
+    "SELECT key FROM students;",
+    kStmtSelect,
+    SelectStatement,
+    result,
+    stmt);
+
+  ASSERT_NULL(stmt->whereClause);
+  ASSERT_NULL(stmt->groupBy);
+
+  ASSERT_EQ(stmt->selectList->size(), 1);
+
+  ASSERT(stmt->selectList->at(0)->isType(kExprColumnRef));
+  ASSERT_STREQ(stmt->selectList->at(0)->getName(), "key");
+}
+
 TEST(SelectExprTest) {
   TEST_PARSE_SINGLE_SQL(
     "SELECT a, MAX(b), CUSTOM(c, F(un)) FROM students;",

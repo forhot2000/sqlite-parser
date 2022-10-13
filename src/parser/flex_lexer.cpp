@@ -718,7 +718,7 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    2,    4,    5,    1,    1,    6,    1,    7,    6,
+        1,    2,    4,    5,    1,    1,    6,    6,    7,    6,
         6,    6,    6,    6,    8,    9,    6,   10,   10,   10,
        10,   10,   10,   10,   10,   10,   10,    6,    6,   11,
        12,   13,    6,    1,   14,   15,   16,   17,   18,   19,
@@ -2501,10 +2501,20 @@ static const flex_int16_t yy_chk[6584] =
 #include <sstream>
 
 #define TOKEN(name) { return SQL_##name; }
+#define FALLBACK_ID {\
+	if (fallback) {\
+		yylval->sval = strdup(yytext);\
+		return SQL_IDENTIFIER;\
+	}\
+}
+#define FALLBACK_BEGIN { fallback = true; }
+#define FALLBACK_END { fallback = false; }
 
 static thread_local std::stringstream strbuf;
 
-#line 2508 "flex_lexer.cpp"
+bool fallback = false;
+
+#line 2518 "flex_lexer.cpp"
 
 /***************************
  ** Section 2: Rules
@@ -2518,7 +2528,7 @@ static thread_local std::stringstream strbuf;
 /***************************
  ** Section 3: Rules
  ***************************/
-#line 2522 "flex_lexer.cpp"
+#line 2532 "flex_lexer.cpp"
 
 #define INITIAL 0
 #define singlequotedstring 1
@@ -2802,10 +2812,10 @@ YY_DECL
 		}
 
 	{
-#line 57 "flex_lexer.l"
+#line 67 "flex_lexer.l"
 
 
-#line 2809 "flex_lexer.cpp"
+#line 2819 "flex_lexer.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -2860,721 +2870,721 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 59 "flex_lexer.l"
+#line 69 "flex_lexer.l"
 BEGIN(COMMENT);
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 60 "flex_lexer.l"
+#line 70 "flex_lexer.l"
 /* skipping comment content until a end of line is read */;
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 61 "flex_lexer.l"
+#line 71 "flex_lexer.l"
 BEGIN(INITIAL);
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 63 "flex_lexer.l"
+#line 73 "flex_lexer.l"
 /* skip whitespace */;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 65 "flex_lexer.l"
+#line 75 "flex_lexer.l"
 TOKEN(AUTOINCREMENT)
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 66 "flex_lexer.l"
+#line 76 "flex_lexer.l"
 TOKEN(CURRENT_DATE)
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 67 "flex_lexer.l"
+#line 77 "flex_lexer.l"
 TOKEN(CURRENT_TIME)
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 68 "flex_lexer.l"
+#line 78 "flex_lexer.l"
 TOKEN(TRANSACTION)
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 69 "flex_lexer.l"
+#line 79 "flex_lexer.l"
 TOKEN(CONSTRAINT)
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 70 "flex_lexer.l"
+#line 80 "flex_lexer.l"
 TOKEN(DEFERRABLE)
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 71 "flex_lexer.l"
+#line 81 "flex_lexer.l"
 TOKEN(REFERENCES)
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 72 "flex_lexer.l"
+#line 82 "flex_lexer.l"
 TOKEN(EXCLUSIVE)
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 73 "flex_lexer.l"
+#line 83 "flex_lexer.l"
 TOKEN(IMMEDIATE)
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 74 "flex_lexer.l"
+#line 84 "flex_lexer.l"
 TOKEN(INITIALLY)
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 75 "flex_lexer.l"
+#line 85 "flex_lexer.l"
 TOKEN(INTERSECT)
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 76 "flex_lexer.l"
+#line 86 "flex_lexer.l"
 TOKEN(RECURSIVE)
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 77 "flex_lexer.l"
+#line 87 "flex_lexer.l"
 TOKEN(SAVEPOINT)
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 78 "flex_lexer.l"
+#line 88 "flex_lexer.l"
 TOKEN(TEMPORARY)
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 79 "flex_lexer.l"
-TOKEN(CONFLICT)
+#line 89 "flex_lexer.l"
+FALLBACK_ID TOKEN(CONFLICT)
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 80 "flex_lexer.l"
-TOKEN(DATABASE)
+#line 90 "flex_lexer.l"
+FALLBACK_ID TOKEN(DATABASE)
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 81 "flex_lexer.l"
-TOKEN(DEFERRED)
+#line 91 "flex_lexer.l"
+FALLBACK_ID TOKEN(DEFERRED)
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 82 "flex_lexer.l"
+#line 92 "flex_lexer.l"
 TOKEN(DISTINCT)
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 83 "flex_lexer.l"
+#line 93 "flex_lexer.l"
 TOKEN(RESTRICT)
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 84 "flex_lexer.l"
+#line 94 "flex_lexer.l"
 TOKEN(ROLLBACK)
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 85 "flex_lexer.l"
-TOKEN(ANALYZE)
+#line 95 "flex_lexer.l"
+FALLBACK_ID TOKEN(ANALYZE)
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 86 "flex_lexer.l"
+#line 96 "flex_lexer.l"
 TOKEN(BETWEEN)
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 87 "flex_lexer.l"
+#line 97 "flex_lexer.l"
 TOKEN(BOOLEAN)
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 88 "flex_lexer.l"
-TOKEN(CASCADE)
+#line 98 "flex_lexer.l"
+FALLBACK_ID TOKEN(CASCADE)
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 89 "flex_lexer.l"
+#line 99 "flex_lexer.l"
 TOKEN(COLLATE)
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 90 "flex_lexer.l"
+#line 100 "flex_lexer.l"
 TOKEN(DEFAULT)
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 91 "flex_lexer.l"
+#line 101 "flex_lexer.l"
 TOKEN(EXPLAIN)
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 92 "flex_lexer.l"
+#line 102 "flex_lexer.l"
 TOKEN(FOREIGN)
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 93 "flex_lexer.l"
+#line 103 "flex_lexer.l"
 TOKEN(INDEXED)
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 94 "flex_lexer.l"
+#line 104 "flex_lexer.l"
 TOKEN(INSTEAD)
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 95 "flex_lexer.l"
+#line 105 "flex_lexer.l"
 TOKEN(INTEGER)
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 96 "flex_lexer.l"
+#line 106 "flex_lexer.l"
 TOKEN(NATURAL)
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 97 "flex_lexer.l"
+#line 107 "flex_lexer.l"
 TOKEN(NOTNULL)
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 98 "flex_lexer.l"
+#line 108 "flex_lexer.l"
 TOKEN(PRIMARY)
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 99 "flex_lexer.l"
+#line 109 "flex_lexer.l"
 TOKEN(REINDEX)
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 100 "flex_lexer.l"
+#line 110 "flex_lexer.l"
 TOKEN(RELEASE)
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 101 "flex_lexer.l"
+#line 111 "flex_lexer.l"
 TOKEN(REPLACE)
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 102 "flex_lexer.l"
+#line 112 "flex_lexer.l"
 TOKEN(TRIGGER)
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 103 "flex_lexer.l"
+#line 113 "flex_lexer.l"
 TOKEN(VIRTUAL)
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 104 "flex_lexer.l"
+#line 114 "flex_lexer.l"
 TOKEN(WITHOUT)
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 105 "flex_lexer.l"
-TOKEN(ACTION)
+#line 115 "flex_lexer.l"
+FALLBACK_ID TOKEN(ACTION)
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 106 "flex_lexer.l"
-TOKEN(ATTACH)
+#line 116 "flex_lexer.l"
+FALLBACK_ID TOKEN(ATTACH)
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 107 "flex_lexer.l"
-TOKEN(BEFORE)
+#line 117 "flex_lexer.l"
+FALLBACK_ID TOKEN(BEFORE)
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 108 "flex_lexer.l"
+#line 118 "flex_lexer.l"
 TOKEN(COLUMN)
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 109 "flex_lexer.l"
+#line 119 "flex_lexer.l"
 TOKEN(COMMIT)
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 110 "flex_lexer.l"
-TOKEN(CREATE)
+#line 120 "flex_lexer.l"
+FALLBACK_END TOKEN(CREATE)
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 111 "flex_lexer.l"
+#line 121 "flex_lexer.l"
 TOKEN(DELETE)
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 112 "flex_lexer.l"
-TOKEN(DETACH)
+#line 122 "flex_lexer.l"
+FALLBACK_ID TOKEN(DETACH)
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 113 "flex_lexer.l"
+#line 123 "flex_lexer.l"
 TOKEN(DOUBLE)
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 114 "flex_lexer.l"
+#line 124 "flex_lexer.l"
 TOKEN(ESCAPE)
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 115 "flex_lexer.l"
+#line 125 "flex_lexer.l"
 TOKEN(EXCEPT)
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 116 "flex_lexer.l"
+#line 126 "flex_lexer.l"
 TOKEN(EXISTS)
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 117 "flex_lexer.l"
+#line 127 "flex_lexer.l"
 TOKEN(HAVING)
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 118 "flex_lexer.l"
-TOKEN(IGNORE)
+#line 128 "flex_lexer.l"
+FALLBACK_ID TOKEN(IGNORE)
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 119 "flex_lexer.l"
-TOKEN(INSERT)
+#line 129 "flex_lexer.l"
+FALLBACK_BEGIN TOKEN(INSERT)
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 120 "flex_lexer.l"
+#line 130 "flex_lexer.l"
 TOKEN(ISNULL)
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 121 "flex_lexer.l"
-TOKEN(OFFSET)
+#line 131 "flex_lexer.l"
+FALLBACK_ID TOKEN(OFFSET)
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 122 "flex_lexer.l"
-TOKEN(PRAGMA)
+#line 132 "flex_lexer.l"
+FALLBACK_ID TOKEN(PRAGMA)
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 123 "flex_lexer.l"
+#line 133 "flex_lexer.l"
 TOKEN(REGEXP)
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 124 "flex_lexer.l"
+#line 134 "flex_lexer.l"
 TOKEN(RENAME)
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 125 "flex_lexer.l"
-TOKEN(SELECT)
+#line 135 "flex_lexer.l"
+FALLBACK_BEGIN TOKEN(SELECT)
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 126 "flex_lexer.l"
+#line 136 "flex_lexer.l"
 TOKEN(UNIQUE)
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 127 "flex_lexer.l"
+#line 137 "flex_lexer.l"
 TOKEN(UPDATE)
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 128 "flex_lexer.l"
+#line 138 "flex_lexer.l"
 TOKEN(VACUUM)
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 129 "flex_lexer.l"
-TOKEN(VALUES)
+#line 139 "flex_lexer.l"
+FALLBACK_END TOKEN(VALUES)
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 130 "flex_lexer.l"
-TOKEN(ABORT)
+#line 140 "flex_lexer.l"
+FALLBACK_ID TOKEN(ABORT)
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 131 "flex_lexer.l"
-TOKEN(AFTER)
+#line 141 "flex_lexer.l"
+FALLBACK_ID TOKEN(AFTER)
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 132 "flex_lexer.l"
-TOKEN(ALTER)
+#line 142 "flex_lexer.l"
+FALLBACK_END TOKEN(ALTER)
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 133 "flex_lexer.l"
-TOKEN(BEGIN)
+#line 143 "flex_lexer.l"
+FALLBACK_ID TOKEN(BEGIN)
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 134 "flex_lexer.l"
+#line 144 "flex_lexer.l"
 TOKEN(CHECK)
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 135 "flex_lexer.l"
+#line 145 "flex_lexer.l"
 TOKEN(CROSS)
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 136 "flex_lexer.l"
+#line 146 "flex_lexer.l"
 TOKEN(FLOAT)
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 137 "flex_lexer.l"
+#line 147 "flex_lexer.l"
 TOKEN(GROUP)
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 138 "flex_lexer.l"
+#line 148 "flex_lexer.l"
 TOKEN(INDEX)
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 139 "flex_lexer.l"
+#line 149 "flex_lexer.l"
 TOKEN(INNER)
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 140 "flex_lexer.l"
+#line 150 "flex_lexer.l"
 TOKEN(LIMIT)
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 141 "flex_lexer.l"
+#line 151 "flex_lexer.l"
 TOKEN(MATCH)
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 142 "flex_lexer.l"
+#line 152 "flex_lexer.l"
 TOKEN(ORDER)
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 143 "flex_lexer.l"
+#line 153 "flex_lexer.l"
 TOKEN(OUTER)
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 144 "flex_lexer.l"
-TOKEN(QUERY)
+#line 154 "flex_lexer.l"
+FALLBACK_ID TOKEN(QUERY)
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 145 "flex_lexer.l"
+#line 155 "flex_lexer.l"
 TOKEN(RAISE)
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 146 "flex_lexer.l"
+#line 156 "flex_lexer.l"
 TOKEN(RIGHT)
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 147 "flex_lexer.l"
+#line 157 "flex_lexer.l"
 TOKEN(TABLE)
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 148 "flex_lexer.l"
+#line 158 "flex_lexer.l"
 TOKEN(UNION)
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 149 "flex_lexer.l"
+#line 159 "flex_lexer.l"
 TOKEN(USING)
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 150 "flex_lexer.l"
+#line 160 "flex_lexer.l"
 TOKEN(WHERE)
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 151 "flex_lexer.l"
+#line 161 "flex_lexer.l"
 TOKEN(BLOB)
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 152 "flex_lexer.l"
+#line 162 "flex_lexer.l"
 TOKEN(CASE)
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 153 "flex_lexer.l"
+#line 163 "flex_lexer.l"
 TOKEN(CAST)
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 154 "flex_lexer.l"
-TOKEN(DESC)
+#line 164 "flex_lexer.l"
+FALLBACK_ID TOKEN(DESC)
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 155 "flex_lexer.l"
+#line 165 "flex_lexer.l"
 TOKEN(DROP)
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 156 "flex_lexer.l"
+#line 166 "flex_lexer.l"
 TOKEN(EACH)
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 157 "flex_lexer.l"
+#line 167 "flex_lexer.l"
 TOKEN(ELSE)
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 158 "flex_lexer.l"
+#line 168 "flex_lexer.l"
 TOKEN(FAIL)
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 159 "flex_lexer.l"
-TOKEN(FROM)
+#line 169 "flex_lexer.l"
+FALLBACK_END TOKEN(FROM)
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 160 "flex_lexer.l"
+#line 170 "flex_lexer.l"
 TOKEN(FULL)
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
-#line 161 "flex_lexer.l"
+#line 171 "flex_lexer.l"
 TOKEN(GLOB)
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
-#line 162 "flex_lexer.l"
+#line 172 "flex_lexer.l"
 TOKEN(INTO)
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
-#line 163 "flex_lexer.l"
+#line 173 "flex_lexer.l"
 TOKEN(JOIN)
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
-#line 164 "flex_lexer.l"
+#line 174 "flex_lexer.l"
 TOKEN(LEFT)
 	YY_BREAK
 case 105:
 YY_RULE_SETUP
-#line 165 "flex_lexer.l"
+#line 175 "flex_lexer.l"
 TOKEN(LIKE)
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
-#line 166 "flex_lexer.l"
+#line 176 "flex_lexer.l"
 TOKEN(LONG)
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
-#line 167 "flex_lexer.l"
+#line 177 "flex_lexer.l"
 TOKEN(NULL)
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
-#line 168 "flex_lexer.l"
+#line 178 "flex_lexer.l"
 TOKEN(PLAN)
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
-#line 169 "flex_lexer.l"
+#line 179 "flex_lexer.l"
 TOKEN(REAL)
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
-#line 170 "flex_lexer.l"
+#line 180 "flex_lexer.l"
 TOKEN(TEMP)
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
-#line 171 "flex_lexer.l"
+#line 181 "flex_lexer.l"
 TOKEN(TEXT)
 	YY_BREAK
 case 112:
 YY_RULE_SETUP
-#line 172 "flex_lexer.l"
+#line 182 "flex_lexer.l"
 TOKEN(THEN)
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
-#line 173 "flex_lexer.l"
+#line 183 "flex_lexer.l"
 TOKEN(VIEW)
 	YY_BREAK
 case 114:
 YY_RULE_SETUP
-#line 174 "flex_lexer.l"
+#line 184 "flex_lexer.l"
 TOKEN(WHEN)
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
-#line 175 "flex_lexer.l"
+#line 185 "flex_lexer.l"
 TOKEN(WITH)
 	YY_BREAK
 case 116:
 YY_RULE_SETUP
-#line 176 "flex_lexer.l"
+#line 186 "flex_lexer.l"
 TOKEN(ADD)
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 177 "flex_lexer.l"
+#line 187 "flex_lexer.l"
 TOKEN(ALL)
 	YY_BREAK
 case 118:
 YY_RULE_SETUP
-#line 178 "flex_lexer.l"
+#line 188 "flex_lexer.l"
 TOKEN(AND)
 	YY_BREAK
 case 119:
 YY_RULE_SETUP
-#line 179 "flex_lexer.l"
-TOKEN(ASC)
+#line 189 "flex_lexer.l"
+FALLBACK_ID TOKEN(ASC)
 	YY_BREAK
 case 120:
 YY_RULE_SETUP
-#line 180 "flex_lexer.l"
+#line 190 "flex_lexer.l"
 TOKEN(END)
 	YY_BREAK
 case 121:
 YY_RULE_SETUP
-#line 181 "flex_lexer.l"
-TOKEN(FOR)
+#line 191 "flex_lexer.l"
+FALLBACK_ID TOKEN(FOR)
 	YY_BREAK
 case 122:
 YY_RULE_SETUP
-#line 182 "flex_lexer.l"
+#line 192 "flex_lexer.l"
 TOKEN(INT)
 	YY_BREAK
 case 123:
 YY_RULE_SETUP
-#line 183 "flex_lexer.l"
-TOKEN(KEY)
+#line 193 "flex_lexer.l"
+FALLBACK_ID TOKEN(KEY)
 	YY_BREAK
 case 124:
 YY_RULE_SETUP
-#line 184 "flex_lexer.l"
+#line 194 "flex_lexer.l"
 TOKEN(NOT)
 	YY_BREAK
 case 125:
 YY_RULE_SETUP
-#line 185 "flex_lexer.l"
+#line 195 "flex_lexer.l"
 TOKEN(ROW)
 	YY_BREAK
 case 126:
 YY_RULE_SETUP
-#line 186 "flex_lexer.l"
+#line 196 "flex_lexer.l"
 TOKEN(SET)
 	YY_BREAK
 case 127:
 YY_RULE_SETUP
-#line 187 "flex_lexer.l"
+#line 197 "flex_lexer.l"
 TOKEN(AS)
 	YY_BREAK
 case 128:
 YY_RULE_SETUP
-#line 188 "flex_lexer.l"
-TOKEN(BY)
+#line 198 "flex_lexer.l"
+FALLBACK_ID TOKEN(BY)
 	YY_BREAK
 case 129:
 YY_RULE_SETUP
-#line 189 "flex_lexer.l"
+#line 199 "flex_lexer.l"
 TOKEN(IF)
 	YY_BREAK
 case 130:
 YY_RULE_SETUP
-#line 190 "flex_lexer.l"
+#line 200 "flex_lexer.l"
 TOKEN(IN)
 	YY_BREAK
 case 131:
 YY_RULE_SETUP
-#line 191 "flex_lexer.l"
+#line 201 "flex_lexer.l"
 TOKEN(IS)
 	YY_BREAK
 case 132:
 YY_RULE_SETUP
-#line 192 "flex_lexer.l"
+#line 202 "flex_lexer.l"
 TOKEN(NO)
 	YY_BREAK
 case 133:
 YY_RULE_SETUP
-#line 193 "flex_lexer.l"
+#line 203 "flex_lexer.l"
 TOKEN(OF)
 	YY_BREAK
 case 134:
 YY_RULE_SETUP
-#line 194 "flex_lexer.l"
+#line 204 "flex_lexer.l"
 TOKEN(ON)
 	YY_BREAK
 case 135:
 YY_RULE_SETUP
-#line 195 "flex_lexer.l"
+#line 205 "flex_lexer.l"
 TOKEN(OR)
 	YY_BREAK
 case 136:
 YY_RULE_SETUP
-#line 196 "flex_lexer.l"
+#line 206 "flex_lexer.l"
 TOKEN(TO)
 	YY_BREAK
 case 137:
 YY_RULE_SETUP
-#line 198 "flex_lexer.l"
+#line 208 "flex_lexer.l"
 TOKEN(NOTEQUALS)
 	YY_BREAK
 case 138:
 YY_RULE_SETUP
-#line 199 "flex_lexer.l"
+#line 209 "flex_lexer.l"
 TOKEN(NOTEQUALS)
 	YY_BREAK
 case 139:
 YY_RULE_SETUP
-#line 200 "flex_lexer.l"
+#line 210 "flex_lexer.l"
 TOKEN(LESSEQ)
 	YY_BREAK
 case 140:
 YY_RULE_SETUP
-#line 201 "flex_lexer.l"
+#line 211 "flex_lexer.l"
 TOKEN(GREATEREQ)
 	YY_BREAK
 case 141:
 YY_RULE_SETUP
-#line 202 "flex_lexer.l"
+#line 212 "flex_lexer.l"
 TOKEN(CONCAT)
 	YY_BREAK
 case 142:
 YY_RULE_SETUP
-#line 204 "flex_lexer.l"
+#line 214 "flex_lexer.l"
 { return yytext[0]; }
 	YY_BREAK
 case 143:
-#line 207 "flex_lexer.l"
+#line 217 "flex_lexer.l"
 case 144:
 YY_RULE_SETUP
-#line 207 "flex_lexer.l"
+#line 217 "flex_lexer.l"
 {
 	yylval->fval = atof(yytext);
 	return SQL_FLOATVAL;
@@ -3582,7 +3592,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 145:
 YY_RULE_SETUP
-#line 212 "flex_lexer.l"
+#line 222 "flex_lexer.l"
 {
 	yylval->ival = atol(yytext);
 	return SQL_INTVAL;
@@ -3590,7 +3600,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 146:
 YY_RULE_SETUP
-#line 217 "flex_lexer.l"
+#line 227 "flex_lexer.l"
 {
 	// Crop the leading and trailing quote char
 	yylval->sval = hsql::substr(yytext, 1, strlen(yytext)-1);
@@ -3599,7 +3609,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 147:
 YY_RULE_SETUP
-#line 223 "flex_lexer.l"
+#line 233 "flex_lexer.l"
 {
 	yylval->sval = strdup(yytext);
 	return SQL_IDENTIFIER;
@@ -3608,7 +3618,7 @@ YY_RULE_SETUP
 case 148:
 /* rule 148 can match eol */
 YY_RULE_SETUP
-#line 228 "flex_lexer.l"
+#line 238 "flex_lexer.l"
 {
 	// Crop the leading and trailing quote char
 	yylval->sval = hsql::substr(yytext, 1, strlen(yytext)-1);
@@ -3617,7 +3627,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 149:
 YY_RULE_SETUP
-#line 234 "flex_lexer.l"
+#line 244 "flex_lexer.l"
 {
 	// Crop the leading and trailing quote char
 	yylval->sval = hsql::substr(yytext, 2, strlen(yytext)-1);
@@ -3626,15 +3636,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 150:
 YY_RULE_SETUP
-#line 240 "flex_lexer.l"
+#line 250 "flex_lexer.l"
 { fprintf(stderr, "[SQL-Lexer-Error] Unknown Character: %c\n", yytext[0]); return 0; }
 	YY_BREAK
 case 151:
 YY_RULE_SETUP
-#line 243 "flex_lexer.l"
+#line 253 "flex_lexer.l"
 ECHO;
 	YY_BREAK
-#line 3638 "flex_lexer.cpp"
+#line 3648 "flex_lexer.cpp"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(singlequotedstring):
 case YY_STATE_EOF(COMMENT):
@@ -4792,7 +4802,7 @@ void yyfree (void * ptr , yyscan_t yyscanner)
 
 #define YYTABLES_NAME "yytables"
 
-#line 243 "flex_lexer.l"
+#line 253 "flex_lexer.l"
 
 /***************************
  ** Section 3: User code

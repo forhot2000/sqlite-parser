@@ -4,7 +4,7 @@
 !PRAGMA table_info( TablesVersion );
 !BEGIN EXCLUSIVE;
 !COMMIT;
-CREATE INDEX IF NOT EXISTS  contact_alias_index ON rcontact ( alias );
+!CREATE INDEX IF NOT EXISTS  contact_alias_index ON rcontact ( alias );
 CREATE TABLE IF NOT EXISTS MultiTaskInfo (  id TEXT PRIMARY KEY ,  type INTEGER default '0' ,  createTime LONG default '0' ,  updateTime LONG default '0' ,  showData BLOB,  data BLOB default '' );
 CREATE TABLE IF NOT EXISTS TablesVersion (  tableHash INTEGER PRIMARY KEY ,  tableSQLMD5 TEXT);
 DELETE FROM rconversation WHERE username='blogapp';

@@ -50,6 +50,8 @@ namespace hsql {
     kOpAsterisk,
     kOpSlash,
     kOpPercentage,
+    kOpBitAnd,
+    kOpBitOr,
     kOpCaret,
 
     kOpEquals,

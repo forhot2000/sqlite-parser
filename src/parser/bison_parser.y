@@ -228,7 +228,7 @@ int yyerror(YYLTYPE* llocp, SQLParserResult* result, yyscan_t scanner, const cha
 %nonassoc	IS				/* sets precedence for IS NULL, etc */
 %left		'+' '-'
 %left		'*' '/' '%'
-%left		'^'
+%left		'^' '&' '|'
 %left		CONCAT
 
 /* Unary Operators */
@@ -701,6 +701,8 @@ binary_expr:
 	|	operand '/' operand			{ $$ = Expr::makeOpBinary($1, kOpSlash, $3); }
 	|	operand '*' operand			{ $$ = Expr::makeOpBinary($1, kOpAsterisk, $3); }
 	|	operand '%' operand			{ $$ = Expr::makeOpBinary($1, kOpPercentage, $3); }
+	|	operand '&' operand			{ $$ = Expr::makeOpBinary($1, kOpBitAnd, $3); }
+	|	operand '|' operand			{ $$ = Expr::makeOpBinary($1, kOpBitOr, $3); }
 	|	operand '^' operand			{ $$ = Expr::makeOpBinary($1, kOpCaret, $3); }
 	|	operand LIKE operand		{ $$ = Expr::makeOpBinary($1, kOpLike, $3); }
 	|	operand NOT LIKE operand	{ $$ = Expr::makeOpBinary($1, kOpNotLike, $4); }
