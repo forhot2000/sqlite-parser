@@ -2,4 +2,4 @@
 INSERT INTO test_table VALUES ('forhot2000:
 <message>
     <img />
-</message>')
+</message>');
