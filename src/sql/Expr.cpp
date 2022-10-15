@@ -120,6 +120,12 @@ namespace hsql {
     return e;
   }
 
+  Expr* Expr::makeLiteral(char* string, ExprType type) {
+    Expr* e = new Expr(type);
+    e->name = string;
+    return e;
+  }
+
   Expr* Expr::makeNullLiteral() {
     Expr* e = new Expr(kExprLiteralNull);
     return e;

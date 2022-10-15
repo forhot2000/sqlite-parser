@@ -150,7 +150,7 @@ int yyerror(YYLTYPE* llocp, SQLParserResult* result, yyscan_t scanner, const cha
 /*********************************
  ** Token Definition
  *********************************/
-%token <sval> IDENTIFIER STRING BINARY
+%token <sval> IDENTIFIER STRING HEX
 %token <fval> FLOATVAL
 %token <ival> INTVAL
 
@@ -193,10 +193,9 @@ int yyerror(YYLTYPE* llocp, SQLParserResult* result, yyscan_t scanner, const cha
 %type <table>		join_clause table_ref_name_no_alias
 %type <expr> 		expr operand scalar_expr unary_expr binary_expr logic_expr exists_expr cast_expr
 %type <expr>		function_expr between_expr expr_alias param_expr
-%type <expr> 		column_name literal int_literal num_literal string_literal
-%type <expr> 		comp_expr opt_where join_condition opt_having case_expr case_list in_expr hint
-%type <expr> 		array_expr array_index null_literal
-%type <limit>		opt_limit opt_top
+%type <expr> 		column_name literal int_literal num_literal string_literal hex_literal
+%type <expr> 		comp_expr opt_where join_condition opt_having case_expr case_list in_expr null_literal
+%type <limit>		opt_limit
 %type <order>		order_desc
 %type <order_type>	opt_order_type
 %type <column_t>	column_def
@@ -772,6 +771,7 @@ column_name:
 
 literal:
 		string_literal
+	|	hex_literal
 	|	num_literal
 	|	null_literal
 	|	param_expr
@@ -779,9 +779,11 @@ literal:
 
 string_literal:
 		STRING { $$ = Expr::makeLiteral($1); }
-	|	BINARY { $$ = Expr::makeLiteral($1); }
 	;
 
+hex_literal:
+		HEX { $$ = Expr::makeLiteral($1, kExprLiteralHex); }
+	;
 
 num_literal:
 		FLOATVAL { $$ = Expr::makeLiteral($1); }

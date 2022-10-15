@@ -35,6 +35,22 @@ TEST(SelectKeyTest) {
   ASSERT_STREQ(stmt->selectList->at(0)->getName(), "key");
 }
 
+TEST(SelectHexTest) {
+  TEST_PARSE_SINGLE_SQL(
+    "SELECT x'10203040' FROM students;",
+    kStmtSelect,
+    SelectStatement,
+    result,
+    stmt);
+
+  ASSERT_NULL(stmt->whereClause);
+  ASSERT_NULL(stmt->groupBy);
+
+  ASSERT_EQ(stmt->selectList->size(), 1);
+
+  //ASSERT_STREQ(stmt->selectList->at(0)->type, kExprLiteralHex);
+}
+
 TEST(SelectExprTest) {
   TEST_PARSE_SINGLE_SQL(
     "SELECT a, MAX(b), CUSTOM(c, F(un)) FROM students;",

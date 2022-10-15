@@ -3631,7 +3631,7 @@ YY_RULE_SETUP
 {
 	// Crop the leading and trailing quote char
 	yylval->sval = hsql::substr(yytext, 2, strlen(yytext)-1);
-	return SQL_BINARY;
+	return SQL_HEX;
 }
 	YY_BREAK
 case 150:

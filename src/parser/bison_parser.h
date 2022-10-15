@@ -84,7 +84,7 @@ extern int hsql_debug;
   {
     SQL_IDENTIFIER = 258,
     SQL_STRING = 259,
-    SQL_BINARY = 260,
+    SQL_HEX = 260,
     SQL_FLOATVAL = 261,
     SQL_INTVAL = 262,
     SQL_AUTOINCREMENT = 263,

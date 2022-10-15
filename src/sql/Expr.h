@@ -16,6 +16,7 @@ namespace hsql {
   enum ExprType {
     kExprLiteralFloat,
     kExprLiteralString,
+    kExprLiteralHex,
     kExprLiteralInt,
     kExprLiteralNull,
     kExprStar,
@@ -149,6 +150,8 @@ namespace hsql {
     static Expr* makeLiteral(double val);
 
     static Expr* makeLiteral(char* val);
+
+    static Expr* makeLiteral(char* val, ExprType type);
 
     static Expr* makeNullLiteral();
 
