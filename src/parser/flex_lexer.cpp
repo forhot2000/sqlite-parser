@@ -3594,7 +3594,7 @@ case 145:
 YY_RULE_SETUP
 #line 222 "flex_lexer.l"
 {
-	yylval->ival = atol(yytext);
+	yylval->ival = strtoll(yytext, NULL, 10);
 	return SQL_INTVAL;
 }
 	YY_BREAK

@@ -220,7 +220,7 @@ TO                TOKEN(TO)
 }
 
 -?[0-9]+	{
-	yylval->ival = atol(yytext);
+	yylval->ival = strtoll(yytext, NULL, 10);
 	return SQL_INTVAL;
 }
 
