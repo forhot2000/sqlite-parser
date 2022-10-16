@@ -83,13 +83,23 @@ TEST(UpdateStatementTest) {
 
 TEST(InsertStatementTest) {
   TEST_PARSE_SINGLE_SQL(
-    "INSERT INTO students VALUES ('Max Mustermann', 12345, 'Musterhausen', 2.0)",
+    "INSERT INTO students VALUES ('Max Mustermann', 12345, 'Musterhausen', 2.0, 983176518411240370)",
     kStmtInsert,
     InsertStatement,
     result,
     stmt);
 
-  ASSERT_EQ(stmt->values->size(), 4);
+  ASSERT_EQ(stmt->values->size(), 5);
+  ASSERT_EQ(stmt->values->at(0)->type, kExprLiteralString);
+  // ASSERT_STREQ(stmt->values->at(0)->name, "Max Mustermann");
+  ASSERT_EQ(stmt->values->at(1)->type, kExprLiteralInt);
+  ASSERT_EQ(stmt->values->at(1)->ival, 12345);
+  ASSERT_EQ(stmt->values->at(2)->type, kExprLiteralString);
+  // ASSERT_STREQ(stmt->values->at(2)->ival, "Musterhausen");
+  ASSERT_EQ(stmt->values->at(3)->type, kExprLiteralFloat);
+  ASSERT_EQ(stmt->values->at(3)->fval, 2.0f);
+  ASSERT_EQ(stmt->values->at(4)->type, kExprLiteralInt);
+  ASSERT_EQ(stmt->values->at(4)->ival, 983176518411240370L);
   // TODO
 }
 

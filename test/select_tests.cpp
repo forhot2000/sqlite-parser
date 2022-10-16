@@ -48,7 +48,24 @@ TEST(SelectHexTest) {
 
   ASSERT_EQ(stmt->selectList->size(), 1);
 
-  //ASSERT_STREQ(stmt->selectList->at(0)->type, kExprLiteralHex);
+  ASSERT_EQ(stmt->selectList->at(0)->type, kExprLiteralHex);
+}
+
+TEST(SelectLongTest) {
+  TEST_PARSE_SINGLE_SQL(
+    "SELECT 1664962309000 FROM students;",
+    kStmtSelect,
+    SelectStatement,
+    result,
+    stmt);
+
+  ASSERT_NULL(stmt->whereClause);
+  ASSERT_NULL(stmt->groupBy);
+
+  ASSERT_EQ(stmt->selectList->size(), 1);
+
+  ASSERT_EQ(stmt->selectList->at(0)->type, kExprLiteralInt);
+  ASSERT_EQ(stmt->selectList->at(0)->ival, 1664962309000L);
 }
 
 TEST(SelectExprTest) {
