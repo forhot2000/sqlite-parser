@@ -243,7 +243,7 @@ TO                TOKEN(TO)
 
 X'[A-Za-z0-9]*' {
 	// Crop the leading and trailing quote char
-	yylval->sval = hsql::substr(yytext, 1, strlen(yytext)-1);
+	yylval->sval = hsql::substr(yytext, 2, strlen(yytext)-1);
 	return SQL_HEX;
 }
 
