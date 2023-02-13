@@ -51,6 +51,57 @@ TEST(SelectHexTest) {
   ASSERT_EQ(stmt->selectList->at(0)->type, kExprLiteralHex);
 }
 
+TEST(SelectSingleQuoteTest) {
+  TEST_PARSE_SINGLE_SQL(
+    "SELECT 'John''s cake' FROM students;",
+    kStmtSelect,
+    SelectStatement,
+    result,
+    stmt);
+
+  ASSERT_NULL(stmt->whereClause);
+  ASSERT_NULL(stmt->groupBy);
+
+  ASSERT_EQ(stmt->selectList->size(), 1);
+
+  ASSERT_EQ(stmt->selectList->at(0)->type, kExprLiteralString);
+  ASSERT_STREQ(stmt->selectList->at(0)->name, "John's cake");
+}
+
+TEST(SelectStringTest) {
+  TEST_PARSE_SINGLE_SQL(
+    "SELECT 'moonblade' FROM students;",
+    kStmtSelect,
+    SelectStatement,
+    result,
+    stmt);
+
+  ASSERT_NULL(stmt->whereClause);
+  ASSERT_NULL(stmt->groupBy);
+
+  ASSERT_EQ(stmt->selectList->size(), 1);
+
+  ASSERT_EQ(stmt->selectList->at(0)->type, kExprLiteralString);
+  ASSERT_STREQ(stmt->selectList->at(0)->name, "moonblade");
+}
+
+TEST(SelectMultilineStringTest) {
+  TEST_PARSE_SINGLE_SQL(
+    "SELECT 'moon \\n\nnewline' FROM students;",
+    kStmtSelect,
+    SelectStatement,
+    result,
+    stmt);
+
+  ASSERT_NULL(stmt->whereClause);
+  ASSERT_NULL(stmt->groupBy);
+
+  ASSERT_EQ(stmt->selectList->size(), 1);
+
+  ASSERT_EQ(stmt->selectList->at(0)->type, kExprLiteralString);
+  ASSERT_STREQ(stmt->selectList->at(0)->name, "moon \\n\nnewline");
+}
+
 TEST(SelectLongTest) {
   TEST_PARSE_SINGLE_SQL(
     "SELECT 1664962309000 FROM students;",

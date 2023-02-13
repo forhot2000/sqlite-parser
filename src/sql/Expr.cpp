@@ -249,9 +249,30 @@ namespace hsql {
   char* substr(const char* source, int from, int to) {
     int len = to - from;
     char* copy = (char*)malloc(len + 1);
-    ;
     strncpy(copy, source + from, len);
     copy[len] = '\0';
     return copy;
+  }
+
+  // e.g. "'moon''s cake'" -> "moon's cake"
+  char* getText(const char* source) {
+    int a = 0;
+    int b = 0;
+    char x;
+    int len = strlen(source);
+    char* result = new char[len-1];
+    for (int i = 1; i < len - 1; i++) {
+      x = source[i];
+      if (a == 1) {
+        a = 0;
+        continue;
+      }
+      if (x == '\'') {
+        a = 1;
+      }
+      result[b++] = x;
+    }
+    result[b++] = 0;
+    return result;
   }
 }  // namespace hsql

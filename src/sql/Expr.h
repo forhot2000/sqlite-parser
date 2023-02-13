@@ -13,6 +13,8 @@ namespace hsql {
 // TODO: move to more appropriate place.
   char* substr(const char* source, int from, int to);
 
+  char* getText(const char* source);
+
   enum ExprType {
     kExprLiteralFloat,
     kExprLiteralString,
